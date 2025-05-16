@@ -4,7 +4,6 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-
   theme: {
     extend: {
       colors: {
@@ -20,6 +19,7 @@ export default {
           800: '#075985',
           900: '#0c4a6e',
         },
+        teams: {
           doosan: {
             primary: '#131230', // 두산 베어스 메인 컬러
             secondary: '#1D1D1B', // 두산 서브 컬러
@@ -60,6 +60,7 @@ export default {
             primary: '#EA0029', // KIA 타이거즈 메인 컬러
             secondary: '#FFFFFF', // KIA 서브 컬러
           },
+        },
         }
       },
     },

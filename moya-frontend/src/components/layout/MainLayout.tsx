@@ -1,14 +1,25 @@
 import React, {type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { useTeamStore } from '../../store/teamStore';
 
 interface MainLayoutProps {
     children: ReactNode;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+    const { selectedTeam } = useTeamStore();
+
+    const headerStyle = selectedTeam
+        ? { backgroundColor: `var(--team-color, #0284c7)` }
+        : { backgroundColor: '#0284c7' };
+
+    const rootStyle = {
+        '--team-color': selectedTeam ? `var(--color-teams-${selectedTeam}-primary)` : 'var(--color-primary-600)',
+    } as React.CSSProperties;
+
     return (
-        <div className="min-h-screen bg-gray-100">
-            <header className="bg-primary-600 text-white p-4 shadow-md">
+        <div className="min-h-screen bg-gray-100" style={rootStyle}>
+            <header className="text-white p-4 shadow-md" style={headerStyle}>
                 <div className="container mx-auto flex justify-between items-center">
                     <Link to="/" className="text-2xl font-bold">MOYA</Link>
                     <nav className="space-x-4">
@@ -20,7 +31,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 </div>
             </header>
 
-            <main className="container mx-auto p-4 mt-8">
+            <main className="container mx-auto p-4 mt-4">
                 {children}
             </main>
 
