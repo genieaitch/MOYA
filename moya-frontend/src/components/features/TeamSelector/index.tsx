@@ -20,29 +20,47 @@ const teams: Team[] = [
     { id: 'kia', name: 'KIA 타이거즈' },
 ];
 
-const Index: React.FC = () => {
+// 팀별 컬러를 직접 매핑 (Tailwind의 동적 클래스 생성 문제 해결)
+const teamColorMap: Record<TeamId, { bg: string, hover: string }> = {
+    'doosan': { bg: 'bg-[#131230]', hover: 'hover:bg-opacity-90' },
+    'samsung': { bg: 'bg-[#0066B3]', hover: 'hover:bg-opacity-90' },
+    'lg': { bg: 'bg-[#C30452]', hover: 'hover:bg-opacity-90' },
+    'kt': { bg: 'bg-[#000000]', hover: 'hover:bg-[#1A1A1A]' },
+    'ssg': { bg: 'bg-[#CE0E2D]', hover: 'hover:bg-opacity-90' },
+    'kiwoom': { bg: 'bg-[#820024]', hover: 'hover:bg-opacity-90' },
+    'nc': { bg: 'bg-[#315288]', hover: 'hover:bg-opacity-90' },
+    'hanwha': { bg: 'bg-[#FF6600]', hover: 'hover:bg-opacity-90' },
+    'lotte': { bg: 'bg-[#002856]', hover: 'hover:bg-opacity-90' },
+    'kia': { bg: 'bg-[#EA0029]', hover: 'hover:bg-opacity-90' },
+};
+
+const TeamSelector: React.FC = () => {
     const { selectedTeam, setSelectedTeam } = useTeamStore();
 
     return (
         <div className="bg-white rounded-lg shadow-md p-4">
             <h2 className="text-lg font-bold mb-3">마이팀 선택</h2>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-                {teams.map((team) => (
-                    <button
-                        key={team.id}
-                        className={`p-2 rounded text-sm transition-all ${
-                            selectedTeam === team.id
-                                ? `bg-teams-${team.id}-primary text-white`
-                                : 'bg-gray-100 hover:bg-gray-200'
-                        }`}
-                        onClick={() => setSelectedTeam(team.id)}
-                    >
-                        {team.name}
-                    </button>
-                ))}
+                {teams.map((team) => {
+                    // 선택된 팀에 따라 직접 스타일 적용
+                    const isSelected = selectedTeam === team.id;
+                    const buttonStyle = isSelected
+                        ? `${teamColorMap[team.id].bg} text-white`
+                        : 'bg-gray-100 hover:bg-gray-200';
+
+                    return (
+                        <button
+                            key={team.id}
+                            className={`p-2 rounded text-sm transition-all ${buttonStyle}`}
+                            onClick={() => setSelectedTeam(team.id)}
+                        >
+                            {team.name}
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );
 };
 
-export default Index;
+export default TeamSelector;

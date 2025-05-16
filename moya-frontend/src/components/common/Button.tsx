@@ -1,16 +1,30 @@
-import React, {type ButtonHTMLAttributes } from 'react';
+import React, { type ButtonHTMLAttributes } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useTeamStore } from '../../store/teamStore';
+import { useTeamStore, type TeamId } from '../../store/teamStore';
 import clsx from 'clsx';
+
+// 팀별 컬러 매핑
+const teamColorMap: Record<TeamId, { primary: string, secondary: string }> = {
+    'doosan': { primary: '#131230', secondary: '#1D1D1B' },
+    'samsung': { primary: '#0066B3', secondary: '#B3DAFE' },
+    'lg': { primary: '#C30452', secondary: '#000000' },
+    'kt': { primary: '#000000', secondary: '#E30613' },
+    'ssg': { primary: '#CE0E2D', secondary: '#FFFFFF' },
+    'kiwoom': { primary: '#820024', secondary: '#FFFFFF' },
+    'nc': { primary: '#315288', secondary: '#BCCEE3' },
+    'hanwha': { primary: '#FF6600', secondary: '#000000' },
+    'lotte': { primary: '#002856', secondary: '#C4161C' },
+    'kia': { primary: '#EA0029', secondary: '#FFFFFF' },
+};
 
 const buttonStyles = cva(
     'font-medium rounded-md transition-colors',
     {
         variants: {
             intent: {
-                primary: '', // 팀에 따라 동적으로 결정될 것이므로 비워둠
+                primary: '',
                 secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
-                outline: '', // 팀에 따라 동적으로 결정될 것이므로 비워둠
+                outline: '',
             },
             size: {
                 sm: 'px-3 py-1 text-sm',
@@ -43,33 +57,35 @@ const Button: React.FC<ButtonProps> = ({
                                        }) => {
     const { selectedTeam } = useTeamStore();
 
-    // 선택된 팀에 따라 동적으로 컬러 클래스 생성
-    const teamColorClasses = () => {
-        if (!selectedTeam) {
-            // 기본 컬러 (팀 선택 안 했을 때)
+    // 인라인 스타일 객체를 생성하여 직접 팀 컬러 적용
+    const getButtonStyle = () => {
+        if (intent === 'primary') {
             return {
-                primary: 'bg-primary-600 text-white hover:bg-primary-700',
-                outline: 'border border-primary-600 text-primary-600 hover:bg-primary-50',
+                backgroundColor: selectedTeam ? teamColorMap[selectedTeam]?.primary : '#0ea5e9',
+                color: 'white',
             };
         }
-
-        return {
-            primary: `bg-teams-${selectedTeam}-primary text-white hover:opacity-90`,
-            outline: `border border-teams-${selectedTeam}-primary text-teams-${selectedTeam}-primary hover:bg-gray-50`,
-        };
+        if (intent === 'outline') {
+            return {
+                borderColor: selectedTeam ? teamColorMap[selectedTeam]?.primary : '#0ea5e9',
+                borderWidth: '1px',
+                color: selectedTeam ? teamColorMap[selectedTeam]?.primary : '#0ea5e9',
+            };
+        }
+        return {};
     };
 
-    // 최종 클래스명 생성
+    // 최종 클래스명 및 스타일 생성
     const computedClassName = clsx(
         buttonStyles({ intent, size, fullWidth }),
-        intent === 'primary' && teamColorClasses().primary,
-        intent === 'outline' && teamColorClasses().outline,
+        intent === 'secondary' && 'bg-gray-200 text-gray-800 hover:bg-gray-300',
         className
     );
 
     return (
         <button
             className={computedClassName}
+            style={intent !== 'secondary' ? getButtonStyle() : undefined}
             {...props}
         >
             {children}
