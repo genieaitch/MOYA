@@ -1,0 +1,29 @@
+{
+  "name": "moya",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">",
+  "main": "index.js",
+  "devDependencies": {
+    "@storybook/addon-docs": "^9.0.8",
+    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
+    "@storybook/react-webpack5": "^9.0.8",
+    "prop-types": "^15.8.1",
+    "storybook": "^9.0.8"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J1HOo/MOYA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/J1HOo/MOYA/issues"
+  },
+  "homepage": "https://github.com/J1HOo/MOYA#readme"
+}
